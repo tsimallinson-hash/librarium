@@ -1,0 +1,14 @@
+{
+  "name": "Librarium — Registre Warhammer 40K",
+  "short_name": "Librarium",
+  "description": "Registre personnel de collection de livres Warhammer 40,000",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0d0e11",
+  "theme_color": "#0d0e11",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}

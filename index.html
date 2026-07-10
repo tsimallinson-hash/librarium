@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Librarium — Registre W40K</title>
+<meta name="theme-color" content="#0d0e11">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0d0e11;
+  --panel:#17191f;
+  --panel2:#1e2128;
+  --line:#2c2f38;
+  --bone:#e6ddc6;
+  --bone-dim:#a89f8a;
+  --gold:#c9a44e;
+  --blood:#a3312a;
+  --verdant:#5f7e58;
+  --steel:#79808d;
+  --radius:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--void);
+  background-image:radial-gradient(ellipse at 50% -10%, #1a1c22 0%, var(--void) 60%);
+  color:var(--bone);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  min-height:100vh;
+  padding-bottom:110px;
+}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+
+/* ── Header ── */
+header{text-align:center;padding:28px 0 10px;position:relative}
+.gear{position:absolute;top:10px;right:0;background:transparent;border:1px solid var(--line);color:var(--bone-dim);border-radius:8px;padding:5px 9px;font-size:15px;cursor:pointer;z-index:5}
+.gear:active{border-color:var(--gold);color:var(--gold)}
+.ornament{color:var(--gold);letter-spacing:.5em;font-size:11px;opacity:.8}
+h1{
+  font-family:'Cinzel',serif;font-weight:900;font-size:30px;
+  letter-spacing:.14em;color:var(--gold);margin:4px 0 2px;
+  text-shadow:0 0 24px rgba(201,164,78,.25);
+}
+.subtitle{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--steel)}
+.stats{
+  display:flex;justify-content:center;gap:18px;margin:14px 0 4px;
+  font-size:12px;color:var(--bone-dim);
+}
+.stats b{color:var(--bone);font-size:15px;display:block;text-align:center;font-family:'Cinzel',serif}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:8px;margin:14px 0 12px}
+.tab{
+  flex:1;padding:10px 0;text-align:center;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  font-family:'Cinzel',serif;font-weight:700;font-size:13px;letter-spacing:.08em;
+  color:var(--bone-dim);transition:all .15s;
+}
+.tab.active{color:var(--gold);border-color:var(--gold);background:linear-gradient(180deg,#211e15,var(--panel))}
+.tab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ── Search & filters ── */
+.search{
+  width:100%;padding:11px 14px;border-radius:var(--radius);
+  background:var(--panel);border:1px solid var(--line);color:var(--bone);
+  font-size:16px;margin-bottom:10px;
+}
+.search::placeholder{color:var(--steel)}
+.search:focus{outline:none;border-color:var(--gold)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.chip{
+  flex:0 0 auto;padding:6px 12px;border-radius:999px;font-size:12px;cursor:pointer;
+  background:var(--panel);border:1px solid var(--line);color:var(--bone-dim);white-space:nowrap;
+}
+.chip.active{color:var(--void);background:var(--gold);border-color:var(--gold);font-weight:600}
+.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.progress{
+  font-size:12px;color:var(--bone-dim);text-align:center;margin:2px 0 10px;
+}
+.progress b{color:var(--gold)}
+.pbar{height:4px;background:var(--panel2);border-radius:2px;margin-top:6px;overflow:hidden}
+.pbar span{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#e0c070);border-radius:2px}
+
+/* ── Cards ── */
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px;margin-bottom:10px;cursor:pointer;position:relative;
+  transition:border-color .15s;
+}
+.card:active{border-color:var(--gold)}
+.card .title{font-family:'Cinzel',serif;font-weight:700;font-size:16px;line-height:1.3;color:var(--bone);padding-right:86px}
+.card .author{font-size:13px;color:var(--bone-dim);margin-top:2px}
+.card .series{font-size:12px;color:var(--gold);margin-top:6px;letter-spacing:.04em}
+.card .notes{font-size:12px;color:var(--steel);margin-top:6px;font-style:italic;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.badges{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.seal{
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:3px;border:1px solid;
+}
+.seal.read{color:var(--gold);border-color:var(--gold);background:rgba(201,164,78,.09)}
+.seal.reading{color:#8fb886;border-color:var(--verdant);background:rgba(95,126,88,.12)}
+.seal.toread{color:var(--steel);border-color:var(--steel);background:rgba(121,128,141,.1)}
+.seal.wishlist{color:#d4655e;border-color:var(--blood);background:rgba(163,49,42,.12)}
+.tag{font-size:10px;color:var(--steel);border:1px solid var(--line);padding:2px 7px;border-radius:3px}
+.buy-btn{
+  margin-top:10px;width:100%;padding:9px;border-radius:7px;cursor:pointer;
+  background:rgba(163,49,42,.15);border:1px solid var(--blood);color:#d4655e;
+  font-size:13px;font-weight:600;
+}
+/* Ghost cards : livres du catalogue non possédés */
+.card.ghost{
+  background:transparent;border:1px dashed var(--line);opacity:.85;
+}
+.card.ghost .title{color:var(--bone-dim)}
+.vo-title{font-size:11px;color:var(--steel);font-style:italic;margin-top:1px;padding-right:86px}
+.pub{font-size:11px;color:var(--steel);margin-top:5px;letter-spacing:.02em}
+.price{font-size:13px;color:var(--bone);margin-top:8px}
+.price b{color:var(--gold)}
+.price.muted{color:var(--steel);font-size:11px;font-style:italic}
+.shop-links{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.shop-links a{
+  flex:1;min-width:70px;text-align:center;padding:7px 4px;border-radius:7px;
+  font-size:12px;font-weight:600;text-decoration:none;
+  background:var(--void);border:1px solid var(--line);color:var(--bone-dim);
+}
+.shop-links a small{color:var(--steel);font-weight:400;font-size:10px}
+.shop-links a:active{border-color:var(--gold);color:var(--gold)}
+.ai-hint{font-size:11px;color:var(--steel);margin:10px 2px 14px;line-height:1.5;text-align:center}
+.ai-loading{text-align:center;color:var(--gold);font-size:13px;padding:18px;font-family:'Cinzel',serif;letter-spacing:.06em}
+.ai-error{text-align:center;color:#d4655e;font-size:13px;padding:14px;border:1px solid var(--blood);border-radius:var(--radius);background:rgba(163,49,42,.08)}
+.ai-series{font-family:'Cinzel',serif;color:var(--gold);font-size:14px;letter-spacing:.06em;margin:6px 2px 10px}
+#aiGo{margin-top:2px}
+#aiGo:disabled{opacity:.5}
+.syn-btn{margin-top:8px;padding:6px 12px;border-radius:7px;font-size:12px;cursor:pointer;background:transparent;border:1px solid var(--line);color:var(--gold)}
+.syn-btn:active{border-color:var(--gold)}
+.syn-body{margin-top:8px;padding:8px 10px 8px 12px;border-left:2px solid var(--gold);font-size:13px;line-height:1.55;color:var(--bone-dim);font-style:italic;background:rgba(201,164,78,.04);border-radius:0 7px 7px 0}
+.ghost-tag{
+  font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 9px;border-radius:3px;border:1px dashed var(--steel);color:var(--steel);
+}
+.ghost-actions{display:flex;gap:6px;margin-top:10px}
+.ghost-actions button{
+  flex:1;padding:8px 4px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;
+  background:var(--void);border:1px solid var(--line);color:var(--bone-dim);
+}
+.ghost-actions .ga-read{border-color:var(--gold);color:var(--gold)}
+.ghost-actions .ga-own{border-color:var(--steel);color:var(--bone-dim)}
+.ghost-actions .ga-wish{border-color:var(--blood);color:#d4655e}
+.empty{text-align:center;padding:50px 20px;color:var(--steel);font-size:14px;line-height:1.7}
+.empty .glyph{font-size:30px;color:var(--gold);opacity:.5;display:block;margin-bottom:10px}
+
+/* ── FAB ── */
+.fab{
+  position:fixed;bottom:24px;right:20px;width:58px;height:58px;border-radius:50%;
+  background:var(--gold);color:var(--void);font-size:30px;font-weight:300;line-height:1;
+  border:none;cursor:pointer;box-shadow:0 4px 20px rgba(201,164,78,.35);
+  display:flex;align-items:center;justify-content:center;z-index:50;
+}
+.fab:focus-visible{outline:3px solid var(--bone);outline-offset:2px}
+
+/* ── Modal ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;
+  display:none;align-items:flex-end;justify-content:center;
+}
+.overlay.open{display:flex}
+.modal{
+  background:var(--panel2);border-top:2px solid var(--gold);
+  border-radius:18px 18px 0 0;width:100%;max-width:560px;max-height:88vh;
+  overflow-y:auto;padding:22px 18px calc(22px + env(safe-area-inset-bottom));
+}
+.modal h2{font-family:'Cinzel',serif;font-size:18px;color:var(--gold);letter-spacing:.08em;margin-bottom:16px;text-align:center}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--steel);margin-bottom:5px}
+.field input,.field textarea,.field select{
+  width:100%;padding:10px 12px;border-radius:8px;font-size:16px;
+  background:var(--void);border:1px solid var(--line);color:var(--bone);
+  font-family:inherit;
+}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--gold)}
+.row{display:flex;gap:10px}
+.row .field{flex:1}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{
+  flex:1;min-width:70px;padding:9px 4px;border-radius:8px;font-size:12px;cursor:pointer;
+  background:var(--void);border:1px solid var(--line);color:var(--bone-dim);
+}
+.seg button.sel{border-color:var(--gold);color:var(--gold);background:rgba(201,164,78,.08);font-weight:600}
+.actions{display:flex;gap:10px;margin-top:18px}
+.btn{
+  flex:1;padding:13px;border-radius:9px;font-size:15px;font-weight:600;cursor:pointer;border:none;
+}
+.btn.primary{background:var(--gold);color:var(--void)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--bone-dim)}
+.btn.danger{background:transparent;border:1px solid var(--blood);color:#d4655e;flex:0 0 auto;padding:13px 16px}
+.toast{
+  position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--panel2);border:1px solid var(--gold);color:var(--bone);
+  padding:10px 18px;border-radius:9px;font-size:13px;opacity:0;pointer-events:none;
+  transition:all .25s;z-index:200;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <button class="gear" id="btnSettings" aria-label="Réglages et sauvegarde">⚙</button>
+    <div class="ornament">✠ ✠ ✠</div>
+    <h1>LIBRARIUM</h1>
+    <div class="subtitle">Registre personnel · Warhammer 40,000</div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <div class="tab active" role="tab" tabindex="0" data-tab="collection">Collection</div>
+    <div class="tab" role="tab" tabindex="0" data-tab="wishlist">À acquérir</div>
+    <div class="tab" role="tab" tabindex="0" data-tab="recherche">Recherche</div>
+  </div>
+
+  <input type="search" class="search" id="search" placeholder="Rechercher titre, auteur, série…">
+
+  <div class="chips" id="chips"></div>
+  <div class="progress" id="progress" style="display:none"></div>
+
+  <div id="searchPane" style="display:none">
+    <input type="search" class="search" id="aiQuery" placeholder="Ex. : Fantômes de Gaunt, Eisenhorn, Ravenor…">
+    <button class="btn primary" id="aiGo" style="width:100%">✠ Invoquer l'Archiviste</button>
+    <div class="ai-hint">L'Archiviste recherche sur le web n'importe quel livre ou série Black Library — titres VF, auteurs, dates — et vous permet de les consigner directement.</div>
+    <div id="aiStatus"></div>
+    <div id="aiResults"></div>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<button class="fab" id="fabAdd" aria-label="Ajouter un livre">+</button>
+
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h2 id="modalTitle">Nouveau tome</h2>
+    <div class="field"><label for="fTitle">Titre</label><input id="fTitle" placeholder="ex. Nightbringer"></div>
+    <div class="field"><label for="fAuthor">Auteur</label><input id="fAuthor" placeholder="ex. Graham McNeill"></div>
+    <div class="row">
+      <div class="field"><label for="fSeries">Série</label><input id="fSeries" placeholder="ex. Ultramarines" list="seriesList"><datalist id="seriesList"></datalist></div>
+      <div class="field" style="flex:0 0 90px"><label for="fOrder">Tome n°</label><input id="fOrder" type="number" min="1" inputmode="numeric"></div>
+    </div>
+    <div class="field"><label>Format</label>
+      <div class="seg" id="segFormat">
+        <button data-v="Livre">📖 Livre</button><button data-v="Audio">🎧 Audiobook</button>
+      </div>
+    </div>
+    <div class="field"><label>Langue</label>
+      <div class="seg" id="segLang">
+        <button data-v="VF">VF</button><button data-v="VO">VO (EN)</button>
+      </div>
+    </div>
+    <div class="field"><label>Statut</label>
+      <div class="seg" id="segStatus">
+        <button data-v="wishlist">À acheter</button>
+        <button data-v="toread">À lire</button>
+        <button data-v="reading">En cours</button>
+        <button data-v="read">Lu</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field"><label for="fPriceNew">Prix neuf (€)</label><input id="fPriceNew" type="number" min="0" step="0.5" inputmode="decimal" placeholder="ex. 16"></div>
+      <div class="field"><label for="fPriceUsed">Prix occasion (€)</label><input id="fPriceUsed" type="number" min="0" step="0.5" inputmode="decimal" placeholder="ex. 8"></div>
+    </div>
+    <div class="field"><label for="fNotes">Notes</label><textarea id="fNotes" rows="2" placeholder="Avis, édition, vendeur repéré…"></textarea></div>
+    <div class="actions">
+      <button class="btn danger" id="btnDelete" style="display:none">✕</button>
+      <button class="btn ghost" id="btnCancel">Annuler</button>
+      <button class="btn primary" id="btnSave">Consigner</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay2">
+  <div class="modal" role="dialog" aria-modal="true">
+    <h2>⚙ Réglages & Sauvegarde</h2>
+    <div class="field"><label for="fApiKey">Clé API Anthropic (Archiviste & synopsis)</label><input id="fApiKey" type="password" placeholder="sk-ant-…" autocomplete="off"><div class="ai-hint" style="text-align:left;margin:6px 2px 0">Stockée uniquement sur cet appareil. À créer sur console.anthropic.com → API keys. Sans clé, l’app fonctionne mais sans recherche IA ni synopsis.</div></div>
+    <div class="field"><label for="fData">Données (JSON) — copiez ce texte pour sauvegarder votre registre, ou collez une sauvegarde puis appuyez sur Importer</label><textarea id="fData" rows="7" style="font-size:11px"></textarea></div>
+    <div class="actions">
+      <button class="btn ghost" id="btnCloseSettings">Fermer</button>
+      <button class="btn ghost" id="btnCopyData">Copier</button>
+      <button class="btn primary" id="btnImportData">Importer</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* Stockage local du navigateur (PWA autonome) */
+const appStore={
+  async get(k){const v=localStorage.getItem(k);return v==null?null:{key:k,value:v}},
+  async set(k,v){localStorage.setItem(k,v);return{key:k,value:v}}
+};
+function apiKey(){return localStorage.getItem('librarium:apikey')||''}
+function apiHeaders(){return{'Content-Type':'application/json','x-api-key':apiKey(),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}}
+
+const KEY='librarium:books';
+const SYN_KEY='librarium:synopses';
+let synCache={};
+const STATUS_LABELS={read:'Lu',reading:'En cours',toread:'À lire',wishlist:'À acheter'};
+let books=[];
+let tab='collection';
+let filterSeries='__all__';
+let editId=null;
+let selLang='VF', selStatus='toread', selFormat='Livre';
+
+/* ═══════ CATALOGUE OFFICIEL ═══════
+   Séries complètes intégrées : les tomes non possédés
+   apparaissent en "fantôme" quand la série est sélectionnée. */
+const CATALOG={
+"Horus Heresy":[
+ {o:1,py:2006,ay:2011,fvf:"juil. 2011",tf:"L'Ascension d'Horus",t:"Horus Rising",a:"Dan Abnett"},
+ {o:2,py:2006,ay:2011,fvf:"juin 2011",tf:"Les Faux Dieux",t:"False Gods",a:"Graham McNeill"},
+ {o:3,py:2006,ay:null,fvf:"juin 2011",tf:"La Galaxie en Flammes",t:"Galaxy in Flames",a:"Ben Counter"},
+ {o:4,py:2007,ay:2012,fvf:"juil. 2011",tf:"La Fuite de l'Eisenstein",t:"The Flight of the Eisenstein",a:"James Swallow"},
+ {o:5,py:2007,ay:2013,fvf:"août 2011",tf:"Fulgrim",t:"Fulgrim",a:"Graham McNeill"},
+ {o:6,py:2007,ay:2013,fvf:"janv. 2012",tf:"Le Retour des Anges",t:"Descent of Angels",a:"Mitchel Scanlon"},
+ {o:7,py:2008,ay:2014,fvf:"avril 2012",tf:"Légion",t:"Legion",a:"Dan Abnett"},
+ {o:8,py:2008,ay:null,fvf:"sept. 2012",tf:"La Bataille des Abysses",t:"Battle for the Abyss",a:"Ben Counter"},
+ {o:9,py:2008,ay:null,fvf:"nov. 2012",tf:"Mechanicum",t:"Mechanicum",a:"Graham McNeill"},
+ {o:10,py:2009,ay:null,fvf:"sept. 2014",tf:"Chroniques de l'Hérésie",t:"Tales of Heresy",a:"Anthologie"},
+ {o:11,py:2009,ay:2013,fvf:"janv. 2012",tf:"Les Anges Déchus",t:"Fallen Angels",a:"Mike Lee"},
+ {o:12,py:2010,ay:2010,fvf:"mai 2012",tf:"Un Millier de Fils",t:"A Thousand Sons",a:"Graham McNeill"},
+ {o:13,py:2010,ay:null,fvf:"août 2013",tf:"Némésis",t:"Nemesis",a:"James Swallow"},
+ {o:14,py:2010,ay:null,fvf:"sept. 2011",tf:"Le Premier Hérétique",t:"The First Heretic",a:"Aaron Dembski-Bowden"},
+ {o:15,py:2011,ay:2010,fvf:"oct. 2011",tf:"Prospero Brûle",t:"Prospero Burns",a:"Dan Abnett"},
+ {o:16,py:2011,ay:2011,fvf:"fév. 2012",tf:"L'Âge des Ténèbres",t:"Age of Darkness",a:"Anthologie"},
+ {o:17,py:2011,ay:2011,fvf:"nov. 2012",tf:"Les Morts Oubliés",t:"The Outcast Dead",a:"Graham McNeill"},
+ {o:18,py:2012,ay:2012,fvf:"oct. 2012",tf:"Délivrance Perdue",t:"Deliverance Lost",a:"Gav Thorpe"},
+ {o:19,py:2012,ay:2012,fvf:"déc. 2012",tf:"La Bataille de Calth",t:"Know No Fear",a:"Dan Abnett"},
+ {o:20,py:2012,ay:2012,fvf:"mars 2013",tf:"Les Primarques",t:"The Primarchs",a:"Anthologie"},
+ {o:21,py:2012,ay:2012,fvf:"oct. 2013",tf:"Signus Daemonicus",t:"Fear to Tread",a:"James Swallow"},
+ {o:22,py:2012,ay:null,fvf:"mars 2015",tf:"Les Ombres de la Traîtrise",t:"Shadows of Treachery",a:"Anthologie"},
+ {o:23,py:2013,ay:2012,fvf:"nov. 2013",tf:"L'Ange Exterminatus",t:"Angel Exterminatus",a:"Graham McNeill"},
+ {o:24,py:2013,ay:2012,fvf:"déc. 2013",tf:"Félon",t:"Betrayer",a:"Aaron Dembski-Bowden"},
+ {o:25,py:2013,ay:2013,fvf:"avril 2015",tf:"La Marque de Calth",t:"Mark of Calth",a:"Anthologie"},
+ {o:26,py:2013,ay:2013,fvf:"fév. 2014",tf:"Vulkan est Vivant",t:"Vulkan Lives",a:"Nick Kyme"},
+ {o:27,py:2013,ay:null,fvf:"juin 2014",tf:"Imperium Secundus",t:"The Unremembered Empire",a:"Dan Abnett"},
+ {o:28,py:2014,ay:null,fvf:"oct. 2014",tf:"White Scars",t:"Scars",a:"Chris Wraight"},
+ {o:29,py:2014,ay:2014,fvf:"janv.–fév. 2015 (2 vol.)",tf:"Les Fils de Lupercal / La Bataille de Molech",t:"Vengeful Spirit (VF en 2 vol.)",a:"Graham McNeill",alt:["Les Fils de Lupercal","La Bataille de Molech","Vengeful Spirit"]},
+ {o:30,py:2014,ay:2014,fvf:"nov. 2015",tf:"La Damnation de Pythos",t:"The Damnation of Pythos",a:"David Annandale"},
+ {o:31,py:2015,ay:null,fvf:"janv. 2016",tf:"L'Héritage de la Trahison",t:"Legacies of Betrayal",a:"Anthologie"},
+ {o:32,py:2015,ay:2015,fvf:"sept. 2016",tf:"Retour au Mont Deathfire",t:"Deathfire",a:"Nick Kyme"},
+ {o:33,py:2016,ay:2016,fvf:"déc. 2016",tf:"La Guerre Éternelle",t:"War Without End",a:"Anthologie"},
+ {o:34,py:2015,ay:2016,fvf:"fév. 2017",tf:"Pharos",t:"Pharos",a:"Guy Haley"},
+ {o:35,py:2016,ay:2016,fvf:"mai 2017",tf:"L'Œil de Terra",t:"Eye of Terra",a:"Anthologie"},
+ {o:36,py:2016,ay:2016,fvf:"juin 2017",tf:"Le Chemin Céleste",t:"The Path of Heaven",a:"Chris Wraight"},
+ {o:37,py:2016,ay:2016,fvf:"août 2017",tf:"La Guerre des Ombres",t:"The Silent War",a:"Anthologie"},
+ {o:38,py:2016,ay:2016,fvf:"oct. 2017",tf:"Les Anges de Caliban",t:"Angels of Caliban",a:"Gav Thorpe"},
+ {o:39,py:2016,ay:2016,fvf:"nov. 2017",tf:"Les Prétoriens de Dorn",t:"Praetorian of Dorn",a:"John French"},
+ {o:40,py:2016,ay:2016,fvf:"mars 2018",tf:"Corax",t:"Corax",a:"Gav Thorpe"},
+ {o:41,py:2016,ay:2016,fvf:"mai 2018",tf:"Le Maître de l'Humanité",t:"The Master of Mankind",a:"Aaron Dembski-Bowden"},
+ {o:42,py:2017,ay:2017,fvf:"juil. 2019",tf:"Garro",t:"Garro",a:"James Swallow"},
+ {o:43,py:2017,ay:2017,fvf:"nov. 2019",tf:"Les Légions Brisées",t:"Shattered Legions",a:"Anthologie"},
+ {o:44,py:2017,ay:2017,fvf:"juin 2018",tf:"Le Roi Écarlate",t:"The Crimson King",a:"Graham McNeill"},
+ {o:45,py:2017,ay:2017,fvf:"fév. 2020",tf:"Tallarn",t:"Tallarn",a:"John French"},
+ {o:46,py:2017,ay:2017,fvf:"août 2018",tf:"La Tempête de la Ruine",t:"Ruinstorm",a:"David Annandale"},
+ {o:47,py:2017,ay:2017,fvf:"sept. 2018",tf:"La Vieille Terre",t:"Old Earth",a:"Nick Kyme"},
+ {o:48,py:2018,ay:2018,fvf:"juil. 2020",tf:"Le Fardeau de la Loyauté",t:"The Burden of Loyalty",a:"Anthologie"},
+ {o:49,py:2018,ay:2018,fvf:"nov. 2018",tf:"Le Fléau du Loup",t:"Wolfsbane",a:"Guy Haley"},
+ {o:50,py:2018,ay:2018,fvf:"2020",tf:"Forgés par les Flammes",t:"Born of Flame",a:"Nick Kyme"},
+ {o:51,py:2018,ay:2018,fvf:"déc. 2018",tf:"Esclaves des Ténèbres",t:"Slaves to Darkness",a:"John French"},
+ {o:52,py:2018,ay:2018,fvf:"avril 2021",tf:"Hérauts du Siège",t:"Heralds of the Siege",a:"Anthologie"},
+ {o:53,py:2018,ay:2018,fvf:"nov. 2018",tf:"La Mort des Titans",t:"Titandeath",a:"Guy Haley"},
+ {o:54,py:2019,ay:2019,fvf:"mars 2019",tf:"La Dague Enfouie",t:"The Buried Dagger",a:"James Swallow"}
+],
+"Siege of Terra":[
+ {o:1,py:2019,ay:2019,fvf:"mai 2019",tf:"La Guerre Solaire",t:"The Solar War",a:"John French"},
+ {o:2,py:2019,ay:2019,fvf:"nov. 2019",tf:"Les Égarés et les Damnés",t:"The Lost and the Damned",a:"Guy Haley"},
+ {o:3,py:2020,ay:2020,fvf:"mars 2020",tf:"Le Premier Rempart",t:"The First Wall",a:"Gav Thorpe"},
+ {o:4,py:2020,ay:2020,fvf:"août 2020",tf:"Saturnine",t:"Saturnine",a:"Dan Abnett"},
+ {o:5,py:2021,ay:2021,fvf:"mai 2021",tf:"Mortis",t:"Mortis",a:"John French"},
+ {o:6,py:2021,ay:null,fvf:"déc. 2021",tf:"Le Faucon",t:"Warhawk",a:"Chris Wraight"},
+ {o:7,py:2022,ay:null,fvf:"sept. 2022",tf:"Échos d'Éternité",t:"Echoes of Eternity",a:"Aaron Dembski-Bowden"},
+ {o:8,py:2023,ay:null,fvf:"mars 2023",tf:"La Fin et la Mort — Tome 1",t:"The End and the Death: Volume I",a:"Dan Abnett"},
+ {o:9,py:2023,ay:null,fvf:"nov. 2023",tf:"La Fin et la Mort — Tome 2",t:"The End and the Death: Volume II",a:"Dan Abnett"},
+ {o:10,py:2024,ay:null,fvf:"mars 2024",tf:"La Fin et la Mort — Tome 3",t:"The End and the Death: Volume III",a:"Dan Abnett"}
+],
+"Ultramarines":[
+ {o:1,py:2002,ay:null,fvf:"juin 2012",tf:"Nightbringer",t:"Nightbringer",a:"Graham McNeill"},
+ {o:2,py:2003,ay:null,fvf:"juin 2011",tf:"Les Guerriers d'Ultramar",t:"Warriors of Ultramar",a:"Graham McNeill"},
+ {o:3,py:2004,ay:null,fvf:"juin 2011",tf:"Ciel Mort, Soleil Noir",t:"Dead Sky, Black Sun",a:"Graham McNeill"},
+ {o:4,py:2008,ay:null,fvf:"mars 2012",tf:"Champ de Mort",t:"The Killing Ground",a:"Graham McNeill"},
+ {o:5,py:2009,ay:null,fvf:"mars 2012",tf:"Courage et Honneur",t:"Courage and Honour",a:"Graham McNeill"},
+ {o:6,py:2010,ay:null,fvf:"mars 2012",tf:"La Part du Chapitre",t:"The Chapter's Due",a:"Graham McNeill"},
+ {o:7,py:2020,ay:null,tf:"Les Épées de Calth",t:"The Swords of Calth",a:"Graham McNeill"}
+]
+};
+
+/* Alias de noms de séries (FR/EN) → clé du catalogue */
+const SERIES_ALIASES={
+ "horusheresy":"Horus Heresy",
+ "heresiedhorus":"Horus Heresy",
+ "lheresiedhorus":"Horus Heresy",
+ "hh":"Horus Heresy",
+ "siegeofterra":"Siege of Terra",
+ "siegedeterra":"Siege of Terra",
+ "lesiegedeterra":"Siege of Terra",
+ "ultramarines":"Ultramarines",
+ "urielventris":"Ultramarines"
+};
+
+const SEED=[
+ {id:'s1',title:'Nightbringer',author:'Graham McNeill',series:'Ultramarines',order:1,lang:'VO',status:'reading',format:'Livre',notes:'Début de la série Uriel Ventris.'},
+ {id:'s2',title:"L'Ascension d'Horus",author:'Dan Abnett',series:'Horus Heresy',order:1,lang:'VF',status:'read',format:'Livre',notes:''},
+ {id:'s3',title:'Warriors of Ultramar',author:'Graham McNeill',series:'Ultramarines',order:2,lang:'VO',status:'wishlist',format:'Livre',notes:'Suite directe de Nightbringer.'}
+];
+
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
+function canonSeries(s){const n=norm(s);return SERIES_ALIASES[n]||null}
+
+async function load(){
+  try{
+    const r=await appStore.get(KEY);
+    books=r&&r.value?JSON.parse(r.value):SEED.slice();
+  }catch(e){ books=SEED.slice(); }
+  try{
+    const s=await appStore.get(SYN_KEY);
+    synCache=s&&s.value?JSON.parse(s.value):{};
+  }catch(e){ synCache={}; }
+  render();
+}
+async function save(){
+  try{ await appStore.set(KEY,JSON.stringify(books)); }
+  catch(e){ toast('⚠ Sauvegarde impossible'); }
+}
+
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+/* Un livre du registre correspond-il à une entrée du catalogue ? */
+function matchesCatalog(book,catKey,entry){
+  const bs=canonSeries(book.series);
+  if(bs===catKey && book.order===entry.o) return true;
+  const nt=norm(book.title);
+  if(nt===norm(entry.t)||nt===norm(entry.tf)) return true;
+  if(entry.alt && entry.alt.some(a=>norm(a)===nt)) return true;
+  return false;
+}
+
+function seriesOf(){
+  const s=new Set(Object.keys(CATALOG));
+  books.forEach(b=>{
+    if(!b.series)return;
+    s.add(canonSeries(b.series)||b.series);
+  });
+  return [...s].sort();
+}
+
+function render(){
+  const isSearch=(tab==='recherche');
+  document.getElementById('searchPane').style.display=isSearch?'block':'none';
+  document.getElementById('search').style.display=isSearch?'none':'block';
+  document.getElementById('chips').style.display=isSearch?'none':'flex';
+  document.getElementById('list').style.display=isSearch?'none':'block';
+  if(isSearch){document.getElementById('progress').style.display='none';return;}
+  // stats
+  const c={read:0,reading:0,toread:0,wishlist:0};
+  books.forEach(b=>c[b.status]!==undefined&&c[b.status]++);
+  document.getElementById('stats').innerHTML=
+    `<span><b>${c.read}</b>lus</span><span><b>${c.reading}</b>en cours</span><span><b>${c.toread}</b>à lire</span><span><b>${c.wishlist}</b>à acheter</span>`;
+
+  // chips
+  const chips=document.getElementById('chips');
+  const all=seriesOf();
+  chips.innerHTML='';
+  const mk=(v,lbl)=>{
+    const d=document.createElement('button');
+    d.className='chip'+(filterSeries===v?' active':'');
+    d.textContent=lbl;
+    d.onclick=()=>{filterSeries=v;render()};
+    chips.appendChild(d);
+  };
+  mk('__all__','Toutes séries');
+  all.forEach(s=>mk(s,s));
+
+  // datalist
+  document.getElementById('seriesList').innerHTML=all.map(s=>`<option value="${esc(s)}">`).join('');
+
+  const q=document.getElementById('search').value.toLowerCase().trim();
+  const list=document.getElementById('list');
+  const progress=document.getElementById('progress');
+  list.innerHTML='';
+
+  /* Livres possédés filtrés par onglet */
+  let owned=books.filter(b=> tab==='wishlist' ? b.status==='wishlist' : true);
+  if(filterSeries!=='__all__') owned=owned.filter(b=>(canonSeries(b.series)||b.series)===filterSeries);
+  if(q) owned=owned.filter(b=>(b.title+' '+(b.author||'')+' '+(b.series||'')).toLowerCase().includes(q));
+
+  /* Fantômes du catalogue : tomes de la série non présents dans le registre */
+  let ghosts=[];
+  const cat=CATALOG[filterSeries];
+  if(cat){
+    ghosts=cat.filter(e=>!books.some(b=>matchesCatalog(b,filterSeries,e)));
+    if(q) ghosts=ghosts.filter(e=>(e.t+' '+e.a).toLowerCase().includes(q));
+    // barre de progression de la série
+    const total=cat.length;
+    const ownedInSeries=cat.filter(e=>books.some(b=>matchesCatalog(b,filterSeries,e)&&b.status!=='wishlist')).length;
+    const readInSeries=cat.filter(e=>books.some(b=>matchesCatalog(b,filterSeries,e)&&b.status==='read')).length;
+    progress.style.display='block';
+    progress.innerHTML=`<b>${ownedInSeries}</b>/${total} possédés · <b>${readInSeries}</b>/${total} lus
+      <div class="pbar"><span style="width:${Math.round(readInSeries/total*100)}%"></span></div>`;
+  }else{
+    progress.style.display='none';
+  }
+
+  /* Fusion triée : possédés + fantômes, par numéro de tome */
+  const merged=[
+    ...owned.map(b=>({kind:'owned',o:b.order||999,b})),
+    ...ghosts.map(e=>({kind:'ghost',o:e.o,e}))
+  ].sort((a,b)=>a.o-b.o || (a.kind==='owned'?(a.b.title||''):(a.e.t)).localeCompare(b.kind==='owned'?(b.b.title||''):(b.e.t)));
+
+  if(!merged.length){
+    list.innerHTML=`<div class="empty"><span class="glyph">✠</span>${tab==='wishlist'?'Aucun tome à acquérir.<br>Sélectionnez une série pour voir les tomes manquants.':'Aucun tome consigné.<br>Appuyez sur + ou sélectionnez une série.'}</div>`;
+    return;
+  }
+
+  merged.forEach(item=>{
+    if(item.kind==='owned') list.appendChild(cardOwned(item.b));
+    else list.appendChild(cardGhost(item.e));
+  });
+}
+
+function fmtIcon(f){return f==='Audio'?'🎧 Audio':f==='Livre'?'📖 Livre':''}
+function findCatalogEntry(b){
+  for(const [k,list] of Object.entries(CATALOG)){
+    const e=list.find(e=>matchesCatalog(b,k,e));
+    if(e) return e;
+  }
+  return null;
+}
+function pubLine(e){
+  if(!e||!e.py) return '';
+  const vf=e.fvf?('VF '+e.fvf):'VF n.c.';
+  const audio=e.ay?('🎧 audio VO '+e.ay):'🎧 audio n.c.';
+  return `<div class="pub">📖 ${vf} · VO ${e.py} · ${audio}</div>`;
+}
+
+function euro(v){return (v!=null&&v!=='')?Number(v).toLocaleString('fr-FR',{minimumFractionDigits:0,maximumFractionDigits:2})+' €':null}
+function resellerLinks(b){
+  const q=encodeURIComponent((b.title||'')+' warhammer');
+  return `<div class="shop-links">
+    <a href="https://www.amazon.fr/s?k=${q}" target="_blank" rel="noopener">Amazon</a>
+    <a href="https://www.fnac.com/SearchResult/ResultList.aspx?Search=${q}" target="_blank" rel="noopener">Fnac</a>
+    <a href="https://fr.shopping.rakuten.com/s/${q}" target="_blank" rel="noopener">Rakuten <small>occ.</small></a>
+    <a href="https://www.abebooks.fr/servlet/SearchResults?kn=${q}" target="_blank" rel="noopener">AbeBooks <small>occ.</small></a>
+  </div>`;
+}
+function priceLine(b){
+  const n=euro(b.priceNew),u=euro(b.priceUsed);
+  if(!n&&!u) return `<div class="price muted">Prix non renseignés — vérifiez via les liens ci-dessous, puis consignez-les.</div>`;
+  return `<div class="price">${n?'Neuf : <b>'+n+'</b>':''}${n&&u?' · ':''}${u?'Occasion : <b>'+u+'</b>':''}</div>`;
+}
+async function fetchSynopsis(title,author,series,order){
+  const prompt='Rédige en français un court synopsis (3 à 4 phrases, sans divulgâcher la fin) du livre Warhammer 40,000 « '+title+' »'
+    +(author&&author!=='Anthologie'?' de '+author:'')
+    +(series?' (série '+series+(order?', tome '+order:'')+')':'')
+    +'. Si tu ne connais pas ce livre avec certitude, vérifie sur le web. Réponds UNIQUEMENT avec le texte du synopsis, sans titre ni commentaire.';
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:apiHeaders(),
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,
+      messages:[{role:'user',content:prompt}],
+      tools:[{type:'web_search_20250305',name:'web_search'}]})
+  });
+  const data=await r.json();
+  return (data.content||[]).filter(i=>i.type==='text').map(i=>i.text).join(' ').trim();
+}
+
+async function toggleSyn(card,title,author,series,order){
+  const body=card.querySelector('.syn-body');
+  if(!body)return;
+  if(body.style.display!=='none'){body.style.display='none';return}
+  body.style.display='block';
+  const k=norm(title);
+  if(synCache[k]){body.textContent=synCache[k];return}
+  if(!apiKey()){body.textContent='⚠ Renseignez votre clé API Anthropic dans les réglages ⚙ pour générer les synopsis.';return}
+  body.textContent='✠ L\u2019Archiviste rédige le synopsis\u2026';
+  try{
+    const s=await fetchSynopsis(title,author,series,order);
+    if(!s)throw new Error('vide');
+    synCache[k]=s;
+    try{await appStore.set(SYN_KEY,JSON.stringify(synCache));}catch(_){}
+    body.textContent=s;
+  }catch(err){
+    console.error('Synopsis:',err);
+    body.textContent='⚠ Synopsis indisponible pour le moment. Réessayez.';
+  }
+}
+
+const SYN_HTML='<button class="syn-btn">📜 Synopsis</button><div class="syn-body" style="display:none"></div>';
+
+function cardOwned(b){
+  const d=document.createElement('div');
+  d.className='card';
+  d.setAttribute('tabindex','0');
+  d.innerHTML=`
+    <div class="badges">
+      <span class="seal ${b.status}">${STATUS_LABELS[b.status]}</span>
+      ${b.format?`<span class="tag">${fmtIcon(b.format)}</span>`:''}
+      ${b.lang?`<span class="tag">${b.lang}</span>`:''}
+    </div>
+    <div class="title">${esc(b.title)}</div>
+    <div class="author">${esc(b.author||'')}</div>
+    ${b.series?`<div class="series">◆ ${esc(b.series)}${b.order?' — Tome '+b.order:''}</div>`:''}
+    ${pubLine(findCatalogEntry(b)||b)}
+    ${b.notes?`<div class="notes">${esc(b.notes)}</div>`:''}
+    ${SYN_HTML}
+    ${b.status==='wishlist'&&tab==='wishlist'?priceLine(b)+resellerLinks(b):''}
+    ${b.status==='wishlist'?`<button class="buy-btn" data-buy="${b.id}">✓ Acquis — transférer dans la collection</button>`:''}
+  `;
+  d.onclick=(e)=>{
+    if(e.target.closest('a'))return;
+    if(e.target.classList.contains('syn-btn')){toggleSyn(d,b.title,b.author,b.series,b.order);return}
+    if(e.target.closest('.syn-body'))return;
+    if(e.target.dataset.buy){markBought(e.target.dataset.buy);return}
+    openModal(b.id);
+  };
+  d.onkeydown=(e)=>{if(e.key==='Enter')openModal(b.id)};
+  return d;
+}
+
+function cardGhost(e){
+  const d=document.createElement('div');
+  d.className='card ghost';
+  d.setAttribute('tabindex','0');
+  d.innerHTML=`
+    <div class="badges"><span class="ghost-tag">Non possédé</span></div>
+    <div class="title">${esc(e.tf)}</div>
+    <div class="vo-title">${e.t!==e.tf?'VO : '+esc(e.t):''}</div>
+    <div class="author">${esc(e.a)}</div>
+    <div class="series">◆ ${esc(filterSeries)} — Tome ${e.o}</div>
+    ${pubLine(e)}
+    ${SYN_HTML}
+    <div class="ghost-actions">
+      <button class="ga-read" data-a="read">✓ Lu</button>
+      <button class="ga-own" data-a="toread">Je l'ai</button>
+      <button class="ga-wish" data-a="wishlist">+ À acheter</button>
+    </div>
+  `;
+  d.onclick=(ev)=>{
+    const a=ev.target.dataset.a;
+    if(a){quickAdd(e,a);return}
+    if(ev.target.classList.contains('syn-btn')){toggleSyn(d,e.tf,e.a,filterSeries,e.o);return}
+    if(ev.target.closest('.syn-body'))return;
+    openModalPrefilled(e);
+  };
+  d.onkeydown=(ev)=>{if(ev.key==='Enter')openModalPrefilled(e)};
+  return d;
+}
+
+async function quickAdd(e,status){
+  books.push({id:uid(),title:e.tf,author:e.a,series:filterSeries,order:e.o,lang:'VF',format:status==='wishlist'?'':'Livre',status,notes:''});
+  await save();render();
+  toast(status==='read'?'Consigné : lu ✠':status==='wishlist'?'Ajouté à la liste d\u2019achat':'Ajouté à la collection ✠');
+}
+
+async function markBought(id){
+  const b=books.find(x=>x.id===id);
+  if(b){b.status='toread';await save();render();toast('Tome transféré : à lire ✠')}
+}
+
+/* ── Modal ── */
+function setSeg(segId,val){
+  document.querySelectorAll('#'+segId+' button').forEach(btn=>{
+    btn.classList.toggle('sel',btn.dataset.v===val);
+  });
+}
+document.getElementById('segLang').onclick=e=>{if(e.target.dataset.v){selLang=e.target.dataset.v;setSeg('segLang',selLang)}};
+document.getElementById('segStatus').onclick=e=>{if(e.target.dataset.v){selStatus=e.target.dataset.v;setSeg('segStatus',selStatus)}};
+document.getElementById('segFormat').onclick=e=>{if(e.target.dataset.v){selFormat=e.target.dataset.v;setSeg('segFormat',selFormat)}};
+
+function fillModal(o){
+  document.getElementById('modalTitle').textContent=o.heading;
+  document.getElementById('fTitle').value=o.title||'';
+  document.getElementById('fAuthor').value=o.author||'';
+  document.getElementById('fSeries').value=o.series||'';
+  document.getElementById('fOrder').value=o.order||'';
+  document.getElementById('fNotes').value=o.notes||'';
+  document.getElementById('fPriceNew').value=o.priceNew??'';
+  document.getElementById('fPriceUsed').value=o.priceUsed??'';
+  selLang=o.lang||'VF';selStatus=o.status||'toread';selFormat=o.format||'Livre';
+  setSeg('segLang',selLang);setSeg('segStatus',selStatus);setSeg('segFormat',selFormat);
+  document.getElementById('btnDelete').style.display=o.canDelete?'block':'none';
+  document.getElementById('overlay').classList.add('open');
+}
+
+function openModal(id){
+  editId=id||null;
+  const b=id?books.find(x=>x.id===id):null;
+  fillModal(b?{heading:'Modifier le tome',...b,canDelete:true}
+             :{heading:'Nouveau tome',status:tab==='wishlist'?'wishlist':'toread',canDelete:false});
+  if(!b)setTimeout(()=>document.getElementById('fTitle').focus(),50);
+}
+function openModalPrefilled(e){
+  editId=null;
+  fillModal({heading:'Consigner ce tome',title:e.tf,author:e.a,series:filterSeries,order:e.o,status:'toread',canDelete:false});
+}
+function closeModal(){document.getElementById('overlay').classList.remove('open')}
+
+document.getElementById('fabAdd').onclick=()=>openModal(null);
+document.getElementById('btnCancel').onclick=closeModal;
+document.getElementById('overlay').onclick=e=>{if(e.target.id==='overlay')closeModal()};
+
+document.getElementById('btnSave').onclick=async()=>{
+  const title=document.getElementById('fTitle').value.trim();
+  if(!title){toast('Un titre est requis');return}
+  const data={
+    title,
+    author:document.getElementById('fAuthor').value.trim(),
+    series:document.getElementById('fSeries').value.trim(),
+    order:parseInt(document.getElementById('fOrder').value)||null,
+    lang:selLang,status:selStatus,format:selFormat,
+    priceNew:document.getElementById('fPriceNew').value||null,
+    priceUsed:document.getElementById('fPriceUsed').value||null,
+    notes:document.getElementById('fNotes').value.trim()
+  };
+  if(editId){Object.assign(books.find(x=>x.id===editId),data)}
+  else{books.push({id:uid(),...data})}
+  await save();closeModal();render();
+  toast(editId?'Registre mis à jour ✠':'Tome consigné ✠');
+};
+
+document.getElementById('btnDelete').onclick=async()=>{
+  if(!editId)return;
+  books=books.filter(x=>x.id!==editId);
+  await save();closeModal();render();toast('Tome retiré du registre');
+};
+
+/* ── L'Archiviste : recherche IA (web) de livres/séries Black Library ── */
+let aiData=null;
+function isRegistered(title){const n=norm(title);return books.some(b=>norm(b.title)===n)}
+
+async function askArchivist(){
+  const q=document.getElementById('aiQuery').value.trim();
+  if(!q){toast('Entrez un titre ou une série');return}
+  if(!apiKey()){
+    document.getElementById('aiStatus').innerHTML='<div class="ai-error">⚠ Renseignez votre clé API Anthropic dans les réglages ⚙ (en haut à droite) pour activer l\u2019Archiviste.</div>';
+    return;
+  }
+  const st=document.getElementById('aiStatus'),res=document.getElementById('aiResults');
+  st.innerHTML='<div class="ai-loading">✠ L\u2019Archiviste consulte les archives\u2026</div>';
+  res.innerHTML='';
+  document.getElementById('aiGo').disabled=true;
+  try{
+    const response=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers:apiHeaders(),
+      body:JSON.stringify({
+        model:"claude-sonnet-4-6",max_tokens:1000,
+        messages:[{role:"user",content:'Tu es un bibliographe expert de la Black Library (Warhammer 40,000, Horus Heresy, etc.). Recherche sur le web des informations bibliographiques sur : "'+q+'". Réponds UNIQUEMENT avec un objet JSON valide, sans aucun texte avant ou après, sans backticks : {"series":"nom de la série ou null","books":[{"o":numéro du tome (nombre) ou null,"tf":"titre français (ou titre VO si jamais traduit)","t":"titre VO","a":"auteur","py":année de parution VO (nombre) ou null,"fvf":"date de parution VF, ex. \'mars 2019\', ou null"}]}. Priorité aux éditions françaises. Maximum 12 livres, dans l\u2019ordre de lecture de la série. Si la recherche concerne un seul livre, renvoie un tableau d\u2019un seul élément.'}],
+        tools:[{type:"web_search_20250305",name:"web_search"}]
+      })
+    });
+    const data=await response.json();
+    const text=(data.content||[]).filter(i=>i.type==='text').map(i=>i.text).join('\n');
+    const js=text.slice(text.indexOf('{'),text.lastIndexOf('}')+1);
+    aiData=JSON.parse(js);
+    if(!aiData.books||!aiData.books.length)throw new Error('vide');
+    st.innerHTML='';
+    renderAiResults();
+  }catch(err){
+    console.error('Archiviste:',err);
+    st.innerHTML='<div class="ai-error">⚠ L\u2019Archiviste n\u2019a pas pu répondre. Réessayez ou reformulez votre requête.</div>';
+  }finally{
+    document.getElementById('aiGo').disabled=false;
+  }
+}
+
+function renderAiResults(){
+  const res=document.getElementById('aiResults');
+  res.innerHTML=aiData.series?'<div class="ai-series">◆ '+esc(aiData.series)+' — '+aiData.books.length+' tome(s)</div>':'';
+  aiData.books.forEach((e,i)=>{
+    const d=document.createElement('div');
+    const already=isRegistered(e.tf)||isRegistered(e.t||'');
+    d.className='card ghost';
+    d.innerHTML=`
+      <div class="badges"><span class="${already?'seal read':'ghost-tag'}">${already?'Consigné ✓':'Non consigné'}</span></div>
+      <div class="title">${esc(e.tf||e.t)}</div>
+      <div class="vo-title">${e.t&&e.t!==e.tf?'VO : '+esc(e.t):''}</div>
+      <div class="author">${esc(e.a||'')}</div>
+      ${e.o?`<div class="series">◆ ${esc(aiData.series||'')} — Tome ${e.o}</div>`:''}
+      ${pubLine(e)}
+      ${SYN_HTML}
+      ${already?'':`<div class="ghost-actions">
+        <button class="ga-read" data-i="${i}" data-a="read">✓ Lu</button>
+        <button class="ga-own" data-i="${i}" data-a="toread">Je l'ai</button>
+        <button class="ga-wish" data-i="${i}" data-a="wishlist">+ À acheter</button>
+      </div>`}
+    `;
+    d.onclick=async(ev)=>{
+      if(ev.target.classList.contains('syn-btn')){toggleSyn(d,e.tf||e.t,e.a,aiData.series,e.o);return}
+      if(ev.target.closest('.syn-body'))return;
+      const a=ev.target.dataset.a;
+      if(!a)return;
+      const e2=aiData.books[+ev.target.dataset.i];
+      books.push({id:uid(),title:e2.tf||e2.t,author:e2.a||'',series:aiData.series||'',order:e2.o||null,
+        lang:'VF',format:a==='wishlist'?'':'Livre',status:a,notes:'',py:e2.py||null,fvf:e2.fvf||null});
+      await save();
+      toast(a==='read'?'Consigné : lu ✠':a==='wishlist'?'Ajouté à la liste d\u2019achat':'Ajouté à la collection ✠');
+      renderAiResults();
+    };
+    res.appendChild(d);
+  });
+}
+
+document.getElementById('aiGo').onclick=askArchivist;
+document.getElementById('aiQuery').onkeydown=e=>{if(e.key==='Enter')askArchivist()};
+
+document.querySelectorAll('.tab').forEach(t=>{
+  const go=()=>{tab=t.dataset.tab;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===t));render()};
+  t.onclick=go;
+  t.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}};
+});
+document.getElementById('search').oninput=render;
+
+/* ── Réglages / sauvegarde ── */
+document.getElementById('btnSettings').onclick=()=>{
+  document.getElementById('fData').value=JSON.stringify(books);
+  document.getElementById('fApiKey').value=apiKey();
+  document.getElementById('overlay2').classList.add('open');
+};
+document.getElementById('btnCloseSettings').onclick=()=>{
+  localStorage.setItem('librarium:apikey',document.getElementById('fApiKey').value.trim());
+  document.getElementById('overlay2').classList.remove('open');
+};
+document.getElementById('overlay2').onclick=e=>{if(e.target.id==='overlay2')document.getElementById('overlay2').classList.remove('open')};
+document.getElementById('btnCopyData').onclick=async()=>{
+  const ta=document.getElementById('fData');
+  try{await navigator.clipboard.writeText(ta.value);toast('Copié dans le presse-papiers ✠')}
+  catch(e){ta.select();document.execCommand('copy');toast('Copié ✠')}
+};
+document.getElementById('btnImportData').onclick=async()=>{
+  try{
+    const arr=JSON.parse(document.getElementById('fData').value);
+    if(!Array.isArray(arr))throw new Error('format');
+    books=arr;await save();render();
+    document.getElementById('overlay2').classList.remove('open');
+    toast('Registre importé ✠');
+  }catch(e){toast('⚠ JSON invalide')}
+};
+
+load();
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
