@@ -317,101 +317,12 @@ let filterSeries='__all__';
 let editId=null;
 let selLang='VF', selStatus='toread', selFormat='Livre';
 
-/* ═══════ CATALOGUE OFFICIEL ═══════
-   Séries complètes intégrées : les tomes non possédés
-   apparaissent en "fantôme" quand la série est sélectionnée. */
-const CATALOG={
-"Horus Heresy":[
- {o:1,py:2006,ay:2011,fvf:"juil. 2011",tf:"L'Ascension d'Horus",t:"Horus Rising",a:"Dan Abnett"},
- {o:2,py:2006,ay:2011,fvf:"juin 2011",tf:"Les Faux Dieux",t:"False Gods",a:"Graham McNeill"},
- {o:3,py:2006,ay:null,fvf:"juin 2011",tf:"La Galaxie en Flammes",t:"Galaxy in Flames",a:"Ben Counter"},
- {o:4,py:2007,ay:2012,fvf:"juil. 2011",tf:"La Fuite de l'Eisenstein",t:"The Flight of the Eisenstein",a:"James Swallow"},
- {o:5,py:2007,ay:2013,fvf:"août 2011",tf:"Fulgrim",t:"Fulgrim",a:"Graham McNeill"},
- {o:6,py:2007,ay:2013,fvf:"janv. 2012",tf:"Le Retour des Anges",t:"Descent of Angels",a:"Mitchel Scanlon"},
- {o:7,py:2008,ay:2014,fvf:"avril 2012",tf:"Légion",t:"Legion",a:"Dan Abnett"},
- {o:8,py:2008,ay:null,fvf:"sept. 2012",tf:"La Bataille des Abysses",t:"Battle for the Abyss",a:"Ben Counter"},
- {o:9,py:2008,ay:null,fvf:"nov. 2012",tf:"Mechanicum",t:"Mechanicum",a:"Graham McNeill"},
- {o:10,py:2009,ay:null,fvf:"sept. 2014",tf:"Chroniques de l'Hérésie",t:"Tales of Heresy",a:"Anthologie"},
- {o:11,py:2009,ay:2013,fvf:"janv. 2012",tf:"Les Anges Déchus",t:"Fallen Angels",a:"Mike Lee"},
- {o:12,py:2010,ay:2010,fvf:"mai 2012",tf:"Un Millier de Fils",t:"A Thousand Sons",a:"Graham McNeill"},
- {o:13,py:2010,ay:null,fvf:"août 2013",tf:"Némésis",t:"Nemesis",a:"James Swallow"},
- {o:14,py:2010,ay:null,fvf:"sept. 2011",tf:"Le Premier Hérétique",t:"The First Heretic",a:"Aaron Dembski-Bowden"},
- {o:15,py:2011,ay:2010,fvf:"oct. 2011",tf:"Prospero Brûle",t:"Prospero Burns",a:"Dan Abnett"},
- {o:16,py:2011,ay:2011,fvf:"fév. 2012",tf:"L'Âge des Ténèbres",t:"Age of Darkness",a:"Anthologie"},
- {o:17,py:2011,ay:2011,fvf:"nov. 2012",tf:"Les Morts Oubliés",t:"The Outcast Dead",a:"Graham McNeill"},
- {o:18,py:2012,ay:2012,fvf:"oct. 2012",tf:"Délivrance Perdue",t:"Deliverance Lost",a:"Gav Thorpe"},
- {o:19,py:2012,ay:2012,fvf:"déc. 2012",tf:"La Bataille de Calth",t:"Know No Fear",a:"Dan Abnett"},
- {o:20,py:2012,ay:2012,fvf:"mars 2013",tf:"Les Primarques",t:"The Primarchs",a:"Anthologie"},
- {o:21,py:2012,ay:2012,fvf:"oct. 2013",tf:"Signus Daemonicus",t:"Fear to Tread",a:"James Swallow"},
- {o:22,py:2012,ay:null,fvf:"mars 2015",tf:"Les Ombres de la Traîtrise",t:"Shadows of Treachery",a:"Anthologie"},
- {o:23,py:2013,ay:2012,fvf:"nov. 2013",tf:"L'Ange Exterminatus",t:"Angel Exterminatus",a:"Graham McNeill"},
- {o:24,py:2013,ay:2012,fvf:"déc. 2013",tf:"Félon",t:"Betrayer",a:"Aaron Dembski-Bowden"},
- {o:25,py:2013,ay:2013,fvf:"avril 2015",tf:"La Marque de Calth",t:"Mark of Calth",a:"Anthologie"},
- {o:26,py:2013,ay:2013,fvf:"fév. 2014",tf:"Vulkan est Vivant",t:"Vulkan Lives",a:"Nick Kyme"},
- {o:27,py:2013,ay:null,fvf:"juin 2014",tf:"Imperium Secundus",t:"The Unremembered Empire",a:"Dan Abnett"},
- {o:28,py:2014,ay:null,fvf:"oct. 2014",tf:"White Scars",t:"Scars",a:"Chris Wraight"},
- {o:29,py:2014,ay:2014,fvf:"janv.–fév. 2015 (2 vol.)",tf:"Les Fils de Lupercal / La Bataille de Molech",t:"Vengeful Spirit (VF en 2 vol.)",a:"Graham McNeill",alt:["Les Fils de Lupercal","La Bataille de Molech","Vengeful Spirit"]},
- {o:30,py:2014,ay:2014,fvf:"nov. 2015",tf:"La Damnation de Pythos",t:"The Damnation of Pythos",a:"David Annandale"},
- {o:31,py:2015,ay:null,fvf:"janv. 2016",tf:"L'Héritage de la Trahison",t:"Legacies of Betrayal",a:"Anthologie"},
- {o:32,py:2015,ay:2015,fvf:"sept. 2016",tf:"Retour au Mont Deathfire",t:"Deathfire",a:"Nick Kyme"},
- {o:33,py:2016,ay:2016,fvf:"déc. 2016",tf:"La Guerre Éternelle",t:"War Without End",a:"Anthologie"},
- {o:34,py:2015,ay:2016,fvf:"fév. 2017",tf:"Pharos",t:"Pharos",a:"Guy Haley"},
- {o:35,py:2016,ay:2016,fvf:"mai 2017",tf:"L'Œil de Terra",t:"Eye of Terra",a:"Anthologie"},
- {o:36,py:2016,ay:2016,fvf:"juin 2017",tf:"Le Chemin Céleste",t:"The Path of Heaven",a:"Chris Wraight"},
- {o:37,py:2016,ay:2016,fvf:"août 2017",tf:"La Guerre des Ombres",t:"The Silent War",a:"Anthologie"},
- {o:38,py:2016,ay:2016,fvf:"oct. 2017",tf:"Les Anges de Caliban",t:"Angels of Caliban",a:"Gav Thorpe"},
- {o:39,py:2016,ay:2016,fvf:"nov. 2017",tf:"Les Prétoriens de Dorn",t:"Praetorian of Dorn",a:"John French"},
- {o:40,py:2016,ay:2016,fvf:"mars 2018",tf:"Corax",t:"Corax",a:"Gav Thorpe"},
- {o:41,py:2016,ay:2016,fvf:"mai 2018",tf:"Le Maître de l'Humanité",t:"The Master of Mankind",a:"Aaron Dembski-Bowden"},
- {o:42,py:2017,ay:2017,fvf:"juil. 2019",tf:"Garro",t:"Garro",a:"James Swallow"},
- {o:43,py:2017,ay:2017,fvf:"nov. 2019",tf:"Les Légions Brisées",t:"Shattered Legions",a:"Anthologie"},
- {o:44,py:2017,ay:2017,fvf:"juin 2018",tf:"Le Roi Écarlate",t:"The Crimson King",a:"Graham McNeill"},
- {o:45,py:2017,ay:2017,fvf:"fév. 2020",tf:"Tallarn",t:"Tallarn",a:"John French"},
- {o:46,py:2017,ay:2017,fvf:"août 2018",tf:"La Tempête de la Ruine",t:"Ruinstorm",a:"David Annandale"},
- {o:47,py:2017,ay:2017,fvf:"sept. 2018",tf:"La Vieille Terre",t:"Old Earth",a:"Nick Kyme"},
- {o:48,py:2018,ay:2018,fvf:"juil. 2020",tf:"Le Fardeau de la Loyauté",t:"The Burden of Loyalty",a:"Anthologie"},
- {o:49,py:2018,ay:2018,fvf:"nov. 2018",tf:"Le Fléau du Loup",t:"Wolfsbane",a:"Guy Haley"},
- {o:50,py:2018,ay:2018,fvf:"2020",tf:"Forgés par les Flammes",t:"Born of Flame",a:"Nick Kyme"},
- {o:51,py:2018,ay:2018,fvf:"déc. 2018",tf:"Esclaves des Ténèbres",t:"Slaves to Darkness",a:"John French"},
- {o:52,py:2018,ay:2018,fvf:"avril 2021",tf:"Hérauts du Siège",t:"Heralds of the Siege",a:"Anthologie"},
- {o:53,py:2018,ay:2018,fvf:"nov. 2018",tf:"La Mort des Titans",t:"Titandeath",a:"Guy Haley"},
- {o:54,py:2019,ay:2019,fvf:"mars 2019",tf:"La Dague Enfouie",t:"The Buried Dagger",a:"James Swallow"}
-],
-"Siege of Terra":[
- {o:1,py:2019,ay:2019,fvf:"mai 2019",tf:"La Guerre Solaire",t:"The Solar War",a:"John French"},
- {o:2,py:2019,ay:2019,fvf:"nov. 2019",tf:"Les Égarés et les Damnés",t:"The Lost and the Damned",a:"Guy Haley"},
- {o:3,py:2020,ay:2020,fvf:"mars 2020",tf:"Le Premier Rempart",t:"The First Wall",a:"Gav Thorpe"},
- {o:4,py:2020,ay:2020,fvf:"août 2020",tf:"Saturnine",t:"Saturnine",a:"Dan Abnett"},
- {o:5,py:2021,ay:2021,fvf:"mai 2021",tf:"Mortis",t:"Mortis",a:"John French"},
- {o:6,py:2021,ay:null,fvf:"déc. 2021",tf:"Le Faucon",t:"Warhawk",a:"Chris Wraight"},
- {o:7,py:2022,ay:null,fvf:"sept. 2022",tf:"Échos d'Éternité",t:"Echoes of Eternity",a:"Aaron Dembski-Bowden"},
- {o:8,py:2023,ay:null,fvf:"mars 2023",tf:"La Fin et la Mort — Tome 1",t:"The End and the Death: Volume I",a:"Dan Abnett"},
- {o:9,py:2023,ay:null,fvf:"nov. 2023",tf:"La Fin et la Mort — Tome 2",t:"The End and the Death: Volume II",a:"Dan Abnett"},
- {o:10,py:2024,ay:null,fvf:"mars 2024",tf:"La Fin et la Mort — Tome 3",t:"The End and the Death: Volume III",a:"Dan Abnett"}
-],
-"Ultramarines":[
- {o:1,py:2002,ay:null,fvf:"juin 2012",tf:"Nightbringer",t:"Nightbringer",a:"Graham McNeill"},
- {o:2,py:2003,ay:null,fvf:"juin 2011",tf:"Les Guerriers d'Ultramar",t:"Warriors of Ultramar",a:"Graham McNeill"},
- {o:3,py:2004,ay:null,fvf:"juin 2011",tf:"Ciel Mort, Soleil Noir",t:"Dead Sky, Black Sun",a:"Graham McNeill"},
- {o:4,py:2008,ay:null,fvf:"mars 2012",tf:"Champ de Mort",t:"The Killing Ground",a:"Graham McNeill"},
- {o:5,py:2009,ay:null,fvf:"mars 2012",tf:"Courage et Honneur",t:"Courage and Honour",a:"Graham McNeill"},
- {o:6,py:2010,ay:null,fvf:"mars 2012",tf:"La Part du Chapitre",t:"The Chapter's Due",a:"Graham McNeill"},
- {o:7,py:2020,ay:null,tf:"Les Épées de Calth",t:"The Swords of Calth",a:"Graham McNeill"}
-]
-};
-
-/* Alias de noms de séries (FR/EN) → clé du catalogue */
-const SERIES_ALIASES={
- "horusheresy":"Horus Heresy",
- "heresiedhorus":"Horus Heresy",
- "lheresiedhorus":"Horus Heresy",
- "hh":"Horus Heresy",
- "siegeofterra":"Siege of Terra",
- "siegedeterra":"Siege of Terra",
- "lesiegedeterra":"Siege of Terra",
- "ultramarines":"Ultramarines",
- "urielventris":"Ultramarines"
-};
+/* ═══════ CATALOGUE ═══════
+   Chargé dynamiquement depuis data/books.json au démarrage.
+   Permet d'éditer la base (métadonnées + synopsis) sans toucher au code. */
+let CATALOG={};
+let SERIES_ALIASES={};
+let SYNOPSES={};   /* map norm(titre) -> synopsis pré-rédigé issu de la base */
 
 const SEED=[
  {id:'s1',title:'Nightbringer',author:'Graham McNeill',series:'Ultramarines',order:1,lang:'VO',status:'reading',format:'Livre',notes:'Début de la série Uriel Ventris.'},
@@ -424,7 +335,27 @@ function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','
 function norm(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'')}
 function canonSeries(s){const n=norm(s);return SERIES_ALIASES[n]||null}
 
+async function loadCatalog(){
+  try{
+    const r=await fetch('./data/books.json',{cache:'no-cache'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const db=await r.json();
+    SERIES_ALIASES=db.aliases||{};
+    CATALOG={};SYNOPSES={};
+    for(const [key,s] of Object.entries(db.series||{})){
+      CATALOG[key]=s.books;
+      for(const b of s.books){
+        if(b.syn && b.syn.trim()) SYNOPSES[norm(b.tf||b.t)]=b.syn.trim();
+      }
+    }
+  }catch(e){
+    console.error('Chargement books.json impossible:',e);
+    toast('⚠ Base de données introuvable (data/books.json)');
+  }
+}
+
 async function load(){
+  await loadCatalog();
   try{
     const r=await appStore.get(KEY);
     books=r&&r.value?JSON.parse(r.value):SEED.slice();
@@ -590,8 +521,9 @@ async function toggleSyn(card,title,author,series,order){
   if(body.style.display!=='none'){body.style.display='none';return}
   body.style.display='block';
   const k=norm(title);
-  if(synCache[k]){body.textContent=synCache[k];return}
-  if(!apiKey()){body.textContent='⚠ Renseignez votre clé API Anthropic dans les réglages ⚙ pour générer les synopsis.';return}
+  if(SYNOPSES[k]){body.textContent=SYNOPSES[k];return}      /* synopsis pré-rédigé de la base */
+  if(synCache[k]){body.textContent=synCache[k];return}       /* synopsis IA déjà généré et caché */
+  if(!apiKey()){body.textContent='Aucun synopsis dans la base pour ce titre. Renseignez une clé API ⚙ pour le générer via l\u2019Archiviste, ou ajoutez-le à data/books.json.';return}
   body.textContent='✠ L\u2019Archiviste rédige le synopsis\u2026';
   try{
     const s=await fetchSynopsis(title,author,series,order);

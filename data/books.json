@@ -1,0 +1,754 @@
+{
+ "_meta": {
+  "schema": 1,
+  "description": "Base de données Librarium — éditions françaises Warhammer 40K",
+  "updated": "2026-07",
+  "note": "Champ 'syn' = synopsis FR original (à remplir). 'fvf' = date parution VF."
+ },
+ "aliases": {
+  "horusheresy": "Horus Heresy",
+  "heresiedhorus": "Horus Heresy",
+  "lheresiedhorus": "Horus Heresy",
+  "hh": "Horus Heresy",
+  "siegeofterra": "Siege of Terra",
+  "siegedeterra": "Siege of Terra",
+  "lesiegedeterra": "Siege of Terra",
+  "ultramarines": "Ultramarines",
+  "urielventris": "Ultramarines"
+ },
+ "series": {
+  "Horus Heresy": {
+   "nameFr": "L'Hérésie d'Horus",
+   "nameEn": "The Horus Heresy",
+   "books": [
+    {
+     "o": 1,
+     "tf": "L'Ascension d'Horus",
+     "t": "Horus Rising",
+     "a": "Dan Abnett",
+     "py": 2006,
+     "ay": 2011,
+     "fvf": "juil. 2011",
+     "syn": ""
+    },
+    {
+     "o": 2,
+     "tf": "Les Faux Dieux",
+     "t": "False Gods",
+     "a": "Graham McNeill",
+     "py": 2006,
+     "ay": 2011,
+     "fvf": "juin 2011",
+     "syn": ""
+    },
+    {
+     "o": 3,
+     "tf": "La Galaxie en Flammes",
+     "t": "Galaxy in Flames",
+     "a": "Ben Counter",
+     "py": 2006,
+     "ay": null,
+     "fvf": "juin 2011",
+     "syn": ""
+    },
+    {
+     "o": 4,
+     "tf": "La Fuite de l'Eisenstein",
+     "t": "The Flight of the Eisenstein",
+     "a": "James Swallow",
+     "py": 2007,
+     "ay": 2012,
+     "fvf": "juil. 2011",
+     "syn": ""
+    },
+    {
+     "o": 5,
+     "tf": "Fulgrim",
+     "t": "Fulgrim",
+     "a": "Graham McNeill",
+     "py": 2007,
+     "ay": 2013,
+     "fvf": "août 2011",
+     "syn": ""
+    },
+    {
+     "o": 6,
+     "tf": "Le Retour des Anges",
+     "t": "Descent of Angels",
+     "a": "Mitchel Scanlon",
+     "py": 2007,
+     "ay": 2013,
+     "fvf": "janv. 2012",
+     "syn": ""
+    },
+    {
+     "o": 7,
+     "tf": "Légion",
+     "t": "Legion",
+     "a": "Dan Abnett",
+     "py": 2008,
+     "ay": 2014,
+     "fvf": "avril 2012",
+     "syn": ""
+    },
+    {
+     "o": 8,
+     "tf": "La Bataille des Abysses",
+     "t": "Battle for the Abyss",
+     "a": "Ben Counter",
+     "py": 2008,
+     "ay": null,
+     "fvf": "sept. 2012",
+     "syn": ""
+    },
+    {
+     "o": 9,
+     "tf": "Mechanicum",
+     "t": "Mechanicum",
+     "a": "Graham McNeill",
+     "py": 2008,
+     "ay": null,
+     "fvf": "nov. 2012",
+     "syn": ""
+    },
+    {
+     "o": 10,
+     "tf": "Chroniques de l'Hérésie",
+     "t": "Tales of Heresy",
+     "a": "Anthologie",
+     "py": 2009,
+     "ay": null,
+     "fvf": "sept. 2014",
+     "syn": ""
+    },
+    {
+     "o": 11,
+     "tf": "Les Anges Déchus",
+     "t": "Fallen Angels",
+     "a": "Mike Lee",
+     "py": 2009,
+     "ay": 2013,
+     "fvf": "janv. 2012",
+     "syn": ""
+    },
+    {
+     "o": 12,
+     "tf": "Un Millier de Fils",
+     "t": "A Thousand Sons",
+     "a": "Graham McNeill",
+     "py": 2010,
+     "ay": 2010,
+     "fvf": "mai 2012",
+     "syn": ""
+    },
+    {
+     "o": 13,
+     "tf": "Némésis",
+     "t": "Nemesis",
+     "a": "James Swallow",
+     "py": 2010,
+     "ay": null,
+     "fvf": "août 2013",
+     "syn": ""
+    },
+    {
+     "o": 14,
+     "tf": "Le Premier Hérétique",
+     "t": "The First Heretic",
+     "a": "Aaron Dembski-Bowden",
+     "py": 2010,
+     "ay": null,
+     "fvf": "sept. 2011",
+     "syn": ""
+    },
+    {
+     "o": 15,
+     "tf": "Prospero Brûle",
+     "t": "Prospero Burns",
+     "a": "Dan Abnett",
+     "py": 2011,
+     "ay": 2010,
+     "fvf": "oct. 2011",
+     "syn": ""
+    },
+    {
+     "o": 16,
+     "tf": "L'Âge des Ténèbres",
+     "t": "Age of Darkness",
+     "a": "Anthologie",
+     "py": 2011,
+     "ay": 2011,
+     "fvf": "fév. 2012",
+     "syn": ""
+    },
+    {
+     "o": 17,
+     "tf": "Les Morts Oubliés",
+     "t": "The Outcast Dead",
+     "a": "Graham McNeill",
+     "py": 2011,
+     "ay": 2011,
+     "fvf": "nov. 2012",
+     "syn": ""
+    },
+    {
+     "o": 18,
+     "tf": "Délivrance Perdue",
+     "t": "Deliverance Lost",
+     "a": "Gav Thorpe",
+     "py": 2012,
+     "ay": 2012,
+     "fvf": "oct. 2012",
+     "syn": ""
+    },
+    {
+     "o": 19,
+     "tf": "La Bataille de Calth",
+     "t": "Know No Fear",
+     "a": "Dan Abnett",
+     "py": 2012,
+     "ay": 2012,
+     "fvf": "déc. 2012",
+     "syn": ""
+    },
+    {
+     "o": 20,
+     "tf": "Les Primarques",
+     "t": "The Primarchs",
+     "a": "Anthologie",
+     "py": 2012,
+     "ay": 2012,
+     "fvf": "mars 2013",
+     "syn": ""
+    },
+    {
+     "o": 21,
+     "tf": "Signus Daemonicus",
+     "t": "Fear to Tread",
+     "a": "James Swallow",
+     "py": 2012,
+     "ay": 2012,
+     "fvf": "oct. 2013",
+     "syn": ""
+    },
+    {
+     "o": 22,
+     "tf": "Les Ombres de la Traîtrise",
+     "t": "Shadows of Treachery",
+     "a": "Anthologie",
+     "py": 2012,
+     "ay": null,
+     "fvf": "mars 2015",
+     "syn": ""
+    },
+    {
+     "o": 23,
+     "tf": "L'Ange Exterminatus",
+     "t": "Angel Exterminatus",
+     "a": "Graham McNeill",
+     "py": 2013,
+     "ay": 2012,
+     "fvf": "nov. 2013",
+     "syn": ""
+    },
+    {
+     "o": 24,
+     "tf": "Félon",
+     "t": "Betrayer",
+     "a": "Aaron Dembski-Bowden",
+     "py": 2013,
+     "ay": 2012,
+     "fvf": "déc. 2013",
+     "syn": ""
+    },
+    {
+     "o": 25,
+     "tf": "La Marque de Calth",
+     "t": "Mark of Calth",
+     "a": "Anthologie",
+     "py": 2013,
+     "ay": 2013,
+     "fvf": "avril 2015",
+     "syn": ""
+    },
+    {
+     "o": 26,
+     "tf": "Vulkan est Vivant",
+     "t": "Vulkan Lives",
+     "a": "Nick Kyme",
+     "py": 2013,
+     "ay": 2013,
+     "fvf": "fév. 2014",
+     "syn": ""
+    },
+    {
+     "o": 27,
+     "tf": "Imperium Secundus",
+     "t": "The Unremembered Empire",
+     "a": "Dan Abnett",
+     "py": 2013,
+     "ay": null,
+     "fvf": "juin 2014",
+     "syn": ""
+    },
+    {
+     "o": 28,
+     "tf": "White Scars",
+     "t": "Scars",
+     "a": "Chris Wraight",
+     "py": 2014,
+     "ay": null,
+     "fvf": "oct. 2014",
+     "syn": ""
+    },
+    {
+     "o": 29,
+     "tf": "Les Fils de Lupercal / La Bataille de Molech",
+     "t": "Vengeful Spirit (VF en 2 vol.)",
+     "a": "Graham McNeill",
+     "py": 2014,
+     "ay": 2014,
+     "fvf": "janv.–fév. 2015 (2 vol.)",
+     "syn": "",
+     "alt": [
+      "Les Fils de Lupercal",
+      "La Bataille de Molech",
+      "Vengeful Spirit"
+     ]
+    },
+    {
+     "o": 30,
+     "tf": "La Damnation de Pythos",
+     "t": "The Damnation of Pythos",
+     "a": "David Annandale",
+     "py": 2014,
+     "ay": 2014,
+     "fvf": "nov. 2015",
+     "syn": ""
+    },
+    {
+     "o": 31,
+     "tf": "L'Héritage de la Trahison",
+     "t": "Legacies of Betrayal",
+     "a": "Anthologie",
+     "py": 2015,
+     "ay": null,
+     "fvf": "janv. 2016",
+     "syn": ""
+    },
+    {
+     "o": 32,
+     "tf": "Retour au Mont Deathfire",
+     "t": "Deathfire",
+     "a": "Nick Kyme",
+     "py": 2015,
+     "ay": 2015,
+     "fvf": "sept. 2016",
+     "syn": ""
+    },
+    {
+     "o": 33,
+     "tf": "La Guerre Éternelle",
+     "t": "War Without End",
+     "a": "Anthologie",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "déc. 2016",
+     "syn": ""
+    },
+    {
+     "o": 34,
+     "tf": "Pharos",
+     "t": "Pharos",
+     "a": "Guy Haley",
+     "py": 2015,
+     "ay": 2016,
+     "fvf": "fév. 2017",
+     "syn": ""
+    },
+    {
+     "o": 35,
+     "tf": "L'Œil de Terra",
+     "t": "Eye of Terra",
+     "a": "Anthologie",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "mai 2017",
+     "syn": ""
+    },
+    {
+     "o": 36,
+     "tf": "Le Chemin Céleste",
+     "t": "The Path of Heaven",
+     "a": "Chris Wraight",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "juin 2017",
+     "syn": ""
+    },
+    {
+     "o": 37,
+     "tf": "La Guerre des Ombres",
+     "t": "The Silent War",
+     "a": "Anthologie",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "août 2017",
+     "syn": ""
+    },
+    {
+     "o": 38,
+     "tf": "Les Anges de Caliban",
+     "t": "Angels of Caliban",
+     "a": "Gav Thorpe",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "oct. 2017",
+     "syn": ""
+    },
+    {
+     "o": 39,
+     "tf": "Les Prétoriens de Dorn",
+     "t": "Praetorian of Dorn",
+     "a": "John French",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "nov. 2017",
+     "syn": ""
+    },
+    {
+     "o": 40,
+     "tf": "Corax",
+     "t": "Corax",
+     "a": "Gav Thorpe",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "mars 2018",
+     "syn": ""
+    },
+    {
+     "o": 41,
+     "tf": "Le Maître de l'Humanité",
+     "t": "The Master of Mankind",
+     "a": "Aaron Dembski-Bowden",
+     "py": 2016,
+     "ay": 2016,
+     "fvf": "mai 2018",
+     "syn": ""
+    },
+    {
+     "o": 42,
+     "tf": "Garro",
+     "t": "Garro",
+     "a": "James Swallow",
+     "py": 2017,
+     "ay": 2017,
+     "fvf": "juil. 2019",
+     "syn": ""
+    },
+    {
+     "o": 43,
+     "tf": "Les Légions Brisées",
+     "t": "Shattered Legions",
+     "a": "Anthologie",
+     "py": 2017,
+     "ay": 2017,
+     "fvf": "nov. 2019",
+     "syn": ""
+    },
+    {
+     "o": 44,
+     "tf": "Le Roi Écarlate",
+     "t": "The Crimson King",
+     "a": "Graham McNeill",
+     "py": 2017,
+     "ay": 2017,
+     "fvf": "juin 2018",
+     "syn": ""
+    },
+    {
+     "o": 45,
+     "tf": "Tallarn",
+     "t": "Tallarn",
+     "a": "John French",
+     "py": 2017,
+     "ay": 2017,
+     "fvf": "fév. 2020",
+     "syn": ""
+    },
+    {
+     "o": 46,
+     "tf": "La Tempête de la Ruine",
+     "t": "Ruinstorm",
+     "a": "David Annandale",
+     "py": 2017,
+     "ay": 2017,
+     "fvf": "août 2018",
+     "syn": ""
+    },
+    {
+     "o": 47,
+     "tf": "La Vieille Terre",
+     "t": "Old Earth",
+     "a": "Nick Kyme",
+     "py": 2017,
+     "ay": 2017,
+     "fvf": "sept. 2018",
+     "syn": ""
+    },
+    {
+     "o": 48,
+     "tf": "Le Fardeau de la Loyauté",
+     "t": "The Burden of Loyalty",
+     "a": "Anthologie",
+     "py": 2018,
+     "ay": 2018,
+     "fvf": "juil. 2020",
+     "syn": ""
+    },
+    {
+     "o": 49,
+     "tf": "Le Fléau du Loup",
+     "t": "Wolfsbane",
+     "a": "Guy Haley",
+     "py": 2018,
+     "ay": 2018,
+     "fvf": "nov. 2018",
+     "syn": ""
+    },
+    {
+     "o": 50,
+     "tf": "Forgés par les Flammes",
+     "t": "Born of Flame",
+     "a": "Nick Kyme",
+     "py": 2018,
+     "ay": 2018,
+     "fvf": "2020",
+     "syn": ""
+    },
+    {
+     "o": 51,
+     "tf": "Esclaves des Ténèbres",
+     "t": "Slaves to Darkness",
+     "a": "John French",
+     "py": 2018,
+     "ay": 2018,
+     "fvf": "déc. 2018",
+     "syn": ""
+    },
+    {
+     "o": 52,
+     "tf": "Hérauts du Siège",
+     "t": "Heralds of the Siege",
+     "a": "Anthologie",
+     "py": 2018,
+     "ay": 2018,
+     "fvf": "avril 2021",
+     "syn": ""
+    },
+    {
+     "o": 53,
+     "tf": "La Mort des Titans",
+     "t": "Titandeath",
+     "a": "Guy Haley",
+     "py": 2018,
+     "ay": 2018,
+     "fvf": "nov. 2018",
+     "syn": ""
+    },
+    {
+     "o": 54,
+     "tf": "La Dague Enfouie",
+     "t": "The Buried Dagger",
+     "a": "James Swallow",
+     "py": 2019,
+     "ay": 2019,
+     "fvf": "mars 2019",
+     "syn": ""
+    }
+   ]
+  },
+  "Siege of Terra": {
+   "nameFr": "Le Siège de Terra",
+   "nameEn": "The Siege of Terra",
+   "books": [
+    {
+     "o": 1,
+     "tf": "La Guerre Solaire",
+     "t": "The Solar War",
+     "a": "John French",
+     "py": 2019,
+     "ay": 2019,
+     "fvf": "mai 2019",
+     "syn": ""
+    },
+    {
+     "o": 2,
+     "tf": "Les Égarés et les Damnés",
+     "t": "The Lost and the Damned",
+     "a": "Guy Haley",
+     "py": 2019,
+     "ay": 2019,
+     "fvf": "nov. 2019",
+     "syn": ""
+    },
+    {
+     "o": 3,
+     "tf": "Le Premier Rempart",
+     "t": "The First Wall",
+     "a": "Gav Thorpe",
+     "py": 2020,
+     "ay": 2020,
+     "fvf": "mars 2020",
+     "syn": ""
+    },
+    {
+     "o": 4,
+     "tf": "Saturnine",
+     "t": "Saturnine",
+     "a": "Dan Abnett",
+     "py": 2020,
+     "ay": 2020,
+     "fvf": "août 2020",
+     "syn": ""
+    },
+    {
+     "o": 5,
+     "tf": "Mortis",
+     "t": "Mortis",
+     "a": "John French",
+     "py": 2021,
+     "ay": 2021,
+     "fvf": "mai 2021",
+     "syn": ""
+    },
+    {
+     "o": 6,
+     "tf": "Le Faucon",
+     "t": "Warhawk",
+     "a": "Chris Wraight",
+     "py": 2021,
+     "ay": null,
+     "fvf": "déc. 2021",
+     "syn": ""
+    },
+    {
+     "o": 7,
+     "tf": "Échos d'Éternité",
+     "t": "Echoes of Eternity",
+     "a": "Aaron Dembski-Bowden",
+     "py": 2022,
+     "ay": null,
+     "fvf": "sept. 2022",
+     "syn": ""
+    },
+    {
+     "o": 8,
+     "tf": "La Fin et la Mort — Tome 1",
+     "t": "The End and the Death: Volume I",
+     "a": "Dan Abnett",
+     "py": 2023,
+     "ay": null,
+     "fvf": "mars 2023",
+     "syn": ""
+    },
+    {
+     "o": 9,
+     "tf": "La Fin et la Mort — Tome 2",
+     "t": "The End and the Death: Volume II",
+     "a": "Dan Abnett",
+     "py": 2023,
+     "ay": null,
+     "fvf": "nov. 2023",
+     "syn": ""
+    },
+    {
+     "o": 10,
+     "tf": "La Fin et la Mort — Tome 3",
+     "t": "The End and the Death: Volume III",
+     "a": "Dan Abnett",
+     "py": 2024,
+     "ay": null,
+     "fvf": "mars 2024",
+     "syn": ""
+    }
+   ]
+  },
+  "Ultramarines": {
+   "nameFr": "Ultramarines (Uriel Ventris)",
+   "nameEn": "Ultramarines",
+   "books": [
+    {
+     "o": 1,
+     "tf": "Nightbringer",
+     "t": "Nightbringer",
+     "a": "Graham McNeill",
+     "py": 2002,
+     "ay": null,
+     "fvf": "juin 2012",
+     "syn": ""
+    },
+    {
+     "o": 2,
+     "tf": "Les Guerriers d'Ultramar",
+     "t": "Warriors of Ultramar",
+     "a": "Graham McNeill",
+     "py": 2003,
+     "ay": null,
+     "fvf": "juin 2011",
+     "syn": ""
+    },
+    {
+     "o": 3,
+     "tf": "Ciel Mort, Soleil Noir",
+     "t": "Dead Sky, Black Sun",
+     "a": "Graham McNeill",
+     "py": 2004,
+     "ay": null,
+     "fvf": "juin 2011",
+     "syn": ""
+    },
+    {
+     "o": 4,
+     "tf": "Champ de Mort",
+     "t": "The Killing Ground",
+     "a": "Graham McNeill",
+     "py": 2008,
+     "ay": null,
+     "fvf": "mars 2012",
+     "syn": ""
+    },
+    {
+     "o": 5,
+     "tf": "Courage et Honneur",
+     "t": "Courage and Honour",
+     "a": "Graham McNeill",
+     "py": 2009,
+     "ay": null,
+     "fvf": "mars 2012",
+     "syn": ""
+    },
+    {
+     "o": 6,
+     "tf": "La Part du Chapitre",
+     "t": "The Chapter's Due",
+     "a": "Graham McNeill",
+     "py": 2010,
+     "ay": null,
+     "fvf": "mars 2012",
+     "syn": ""
+    },
+    {
+     "o": 7,
+     "tf": "Les Épées de Calth",
+     "t": "The Swords of Calth",
+     "a": "Graham McNeill",
+     "py": 2020,
+     "ay": null,
+     "fvf": null,
+     "syn": ""
+    }
+   ]
+  }
+ }
+}
