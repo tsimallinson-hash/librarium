@@ -286,7 +286,7 @@ h1{
 <div class="overlay" id="overlay2">
   <div class="modal" role="dialog" aria-modal="true">
     <h2>⚙ Réglages & Sauvegarde</h2>
-    <div class="field"><label for="fApiKey">Clé API Anthropic (Archiviste & synopsis)</label><input id="fApiKey" type="password" placeholder="sk-ant-…" autocomplete="off"><div class="ai-hint" style="text-align:left;margin:6px 2px 0">Stockée uniquement sur cet appareil. À créer sur console.anthropic.com → API keys. Sans clé, l’app fonctionne mais sans recherche IA ni synopsis.</div></div>
+    <div class="field"><label for="fApiKey">Clé API Anthropic (Archiviste & synopsis)</label><div style="display:flex;gap:6px"><input id="fApiKey" type="password" placeholder="sk-ant-…" autocomplete="off" style="flex:1"><button type="button" class="btn ghost" id="btnToggleKey" style="padding:5px 10px">👁</button></div><div class="ai-hint" style="text-align:left;margin:6px 2px 0" id="keyPreview"></div><div class="ai-hint" style="text-align:left;margin:2px 2px 0">Stockée uniquement sur cet appareil. À créer sur console.anthropic.com → API keys. Sans clé, l’app fonctionne mais sans recherche IA ni synopsis.</div></div>
     <div class="field"><label for="fData">Données (JSON) — copiez ce texte pour sauvegarder votre registre, ou collez une sauvegarde puis appuyez sur Importer</label><textarea id="fData" rows="7" style="font-size:11px"></textarea></div>
     <div class="actions">
       <button class="btn ghost" id="btnCloseSettings">Fermer</button>
@@ -768,15 +768,32 @@ document.querySelectorAll('.tab').forEach(t=>{
 document.getElementById('search').oninput=render;
 
 /* ── Réglages / sauvegarde ── */
+function updateKeyPreview(){
+  const v=document.getElementById('fApiKey').value;
+  const el=document.getElementById('keyPreview');
+  if(!v){el.textContent='Aucune clé saisie.';return}
+  const head=v.slice(0,7),tail=v.length>4?v.slice(-4):'';
+  el.textContent='Clé actuelle : '+head+'…'+tail+' ('+v.length+' caractères, espaces début/fin ignorés)';
+}
 document.getElementById('btnSettings').onclick=async()=>{
   document.getElementById('fData').value=JSON.stringify(books);
   document.getElementById('fApiKey').value=apiKey();
+  document.getElementById('fApiKey').type='password';
+  document.getElementById('btnToggleKey').textContent='👁';
+  updateKeyPreview();
   document.getElementById('overlay2').classList.add('open');
   const verEl=document.getElementById('verLine');
   try{
     const names=(await caches.keys()).filter(k=>k.startsWith('librarium-'));
     verEl.textContent='Version : '+(names[0]||'aucun cache actif');
   }catch(_){verEl.textContent='Version : indisponible (SW non supporté)'}
+};
+document.getElementById('fApiKey').oninput=updateKeyPreview;
+document.getElementById('btnToggleKey').onclick=()=>{
+  const f=document.getElementById('fApiKey');
+  const showing=f.type==='text';
+  f.type=showing?'password':'text';
+  document.getElementById('btnToggleKey').textContent=showing?'👁':'🙈';
 };
 function closeSettings(){
   localStorage.setItem('librarium:apikey',document.getElementById('fApiKey').value.trim());
