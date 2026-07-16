@@ -513,6 +513,7 @@ async function fetchSynopsis(title,author,series,order){
       tools:[{type:'web_search_20250305',name:'web_search'}]})
   });
   const data=await r.json();
+  if(!r.ok) throw new Error('API '+r.status+' : '+((data.error&&data.error.message)||JSON.stringify(data)));
   return (data.content||[]).filter(i=>i.type==='text').map(i=>i.text).join(' ').trim();
 }
 
@@ -528,13 +529,13 @@ async function toggleSyn(card,title,author,series,order){
   body.textContent='✠ L\u2019Archiviste rédige le synopsis\u2026';
   try{
     const s=await fetchSynopsis(title,author,series,order);
-    if(!s)throw new Error('vide');
+    if(!s)throw new Error('réponse vide');
     synCache[k]=s;
     try{await appStore.set(SYN_KEY,JSON.stringify(synCache));}catch(_){}
     body.textContent=s;
   }catch(err){
     console.error('Synopsis:',err);
-    body.textContent='⚠ Synopsis indisponible pour le moment. Réessayez.';
+    body.textContent='⚠ Synopsis indisponible : '+(err.message||String(err));
   }
 }
 
@@ -702,15 +703,18 @@ async function askArchivist(){
       })
     });
     const data=await response.json();
+    if(!response.ok){
+      throw new Error('API '+response.status+' : '+((data.error&&data.error.message)||JSON.stringify(data)));
+    }
     const text=(data.content||[]).filter(i=>i.type==='text').map(i=>i.text).join('\n');
     const js=text.slice(text.indexOf('{'),text.lastIndexOf('}')+1);
     aiData=JSON.parse(js);
-    if(!aiData.books||!aiData.books.length)throw new Error('vide');
+    if(!aiData.books||!aiData.books.length)throw new Error('Aucun r\u00e9sultat exploitable dans la r\u00e9ponse : '+text.slice(0,200));
     st.innerHTML='';
     renderAiResults();
   }catch(err){
     console.error('Archiviste:',err);
-    st.innerHTML='<div class="ai-error">⚠ L\u2019Archiviste n\u2019a pas pu répondre. Réessayez ou reformulez votre requête.</div>';
+    st.innerHTML='<div class="ai-error">⚠ L\u2019Archiviste n\u2019a pas pu répondre.<br><small>'+esc(err.message||String(err))+'</small></div>';
   }finally{
     document.getElementById('aiGo').disabled=false;
   }
