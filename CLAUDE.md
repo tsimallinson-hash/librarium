@@ -9,6 +9,8 @@ Site statique, déployé via GitHub Pages (push sur `main` = déploiement automa
 - `data/books.json` — LA base de données (métadonnées + synopsis)
 - `manifest.webmanifest`, `icon-*.png` — configuration et icônes PWA
 - `scripts/check.mjs` — vérification du JSON avant commit
+- `scripts/bump-cache.mjs` — met à jour automatiquement la version du cache dans `sw.js`
+- `.githooks/pre-commit` — hook git qui lance les deux scripts ci-dessus à chaque commit
 
 ## Base de données
 Toute la donnée vit dans `data/books.json`. Ne jamais coder de livres en dur dans `index.html`.
@@ -21,15 +23,24 @@ de quatrième de couverture, de Black Library, du Reclusiam, de Lexicanum, de Ba
 d'aucun site tiers — ce sont des textes sous droit d'auteur. En cas de doute sur le
 contenu d'un tome, le signaler plutôt que d'inventer des détails.
 
-## Règle de déploiement OBLIGATOIRE
-À chaque modification de `data/books.json`, `index.html` ou d'un asset :
-incrémenter la version du cache dans `sw.js` (`const CACHE='librarium-vN'` → `vN+1`).
-Sinon les installations PWA existantes continuent de servir l'ancienne version depuis le cache.
+## Règle de déploiement (automatisée)
+La version du cache dans `sw.js` doit changer à chaque modification de
+`data/books.json`, `index.html`, `manifest.webmanifest` ou des icônes — sinon
+les installations PWA existantes continuent de servir l'ancienne version.
+Ce bump est automatique : le hook `.githooks/pre-commit` calcule un hash du
+contenu de ces fichiers et réécrit `const CACHE='librarium-<hash>'` dans
+`sw.js` avant chaque commit (le fichier est ré-ajouté au commit si modifié).
+Ne plus le faire à la main.
+
+Sur un clone fraîchement cloné, activer le hook une fois avec :
+`git config core.hooksPath .githooks`
 
 ## Vérification avant commit
-Lancer `node scripts/check.mjs`. Ne pas committer si le script signale une erreur.
+`node scripts/check.mjs` tourne automatiquement via le hook pre-commit (voir
+ci-dessus). Le commit est bloqué si le script signale une erreur.
 
 ## Workflow de commit
 - Commits atomiques, messages clairs en français.
-- Après validation d'un lot de synopsis, proposer : `check` → commit → bump cache → push.
 - Committer après chaque série validée pour pouvoir revenir en arrière facilement.
+- Le hook pre-commit s'occupe de la vérification et du bump de cache ; il ne
+  reste qu'à commit → push.

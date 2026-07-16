@@ -1,0 +1,12 @@
+#!/bin/sh
+# Vérifie data/books.json puis met à jour automatiquement la version du
+# cache dans sw.js si un asset suivi (index.html, books.json, manifest,
+# icônes) a changé. Le fichier sw.js est ré-ajouté au commit si modifié.
+set -e
+
+node scripts/check.mjs
+node scripts/bump-cache.mjs
+
+if ! git diff --quiet -- sw.js; then
+  git add sw.js
+fi
