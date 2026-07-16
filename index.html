@@ -293,6 +293,7 @@ h1{
       <button class="btn ghost" id="btnCopyData">Copier</button>
       <button class="btn primary" id="btnImportData">Importer</button>
     </div>
+    <div style="text-align:center;margin-top:14px;font-size:10px;opacity:.4" id="verLine">Version : …</div>
   </div>
 </div>
 
@@ -763,10 +764,15 @@ document.querySelectorAll('.tab').forEach(t=>{
 document.getElementById('search').oninput=render;
 
 /* ── Réglages / sauvegarde ── */
-document.getElementById('btnSettings').onclick=()=>{
+document.getElementById('btnSettings').onclick=async()=>{
   document.getElementById('fData').value=JSON.stringify(books);
   document.getElementById('fApiKey').value=apiKey();
   document.getElementById('overlay2').classList.add('open');
+  const verEl=document.getElementById('verLine');
+  try{
+    const names=(await caches.keys()).filter(k=>k.startsWith('librarium-'));
+    verEl.textContent='Version : '+(names[0]||'aucun cache actif');
+  }catch(_){verEl.textContent='Version : indisponible (SW non supporté)'}
 };
 function closeSettings(){
   localStorage.setItem('librarium:apikey',document.getElementById('fApiKey').value.trim());
