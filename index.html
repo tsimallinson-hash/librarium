@@ -768,11 +768,12 @@ document.getElementById('btnSettings').onclick=()=>{
   document.getElementById('fApiKey').value=apiKey();
   document.getElementById('overlay2').classList.add('open');
 };
-document.getElementById('btnCloseSettings').onclick=()=>{
+function closeSettings(){
   localStorage.setItem('librarium:apikey',document.getElementById('fApiKey').value.trim());
   document.getElementById('overlay2').classList.remove('open');
-};
-document.getElementById('overlay2').onclick=e=>{if(e.target.id==='overlay2')document.getElementById('overlay2').classList.remove('open')};
+}
+document.getElementById('btnCloseSettings').onclick=closeSettings;
+document.getElementById('overlay2').onclick=e=>{if(e.target.id==='overlay2')closeSettings()};
 document.getElementById('btnCopyData').onclick=async()=>{
   const ta=document.getElementById('fData');
   try{await navigator.clipboard.writeText(ta.value);toast('Copié dans le presse-papiers ✠')}

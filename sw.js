@@ -1,4 +1,4 @@
-const CACHE='librarium-d730b25438';
+const CACHE='librarium-1ead1b78e0';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./data/books.json'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
